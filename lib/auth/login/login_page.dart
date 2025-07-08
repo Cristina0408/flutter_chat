@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/auth/login/widgets/form.dart';
-import 'package:flutter_application_1/pages/auth/login/widgets/label.dart';
+import 'package:flutter_application_1/auth/login/widgets/form.dart';
+import 'package:flutter_application_1/auth/login/widgets/label.dart';
 
-import '../../term_condicions/terms_condicions_page.dart';
+import '../../pages/term_condicions/terms_condicions_page.dart';
 
 import 'widgets/logo.dart';
 
@@ -14,7 +14,6 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffF2F2F2),
-      appBar: AppBar(),
       body: SafeArea(
         child:SingleChildScrollView(
         physics:BouncingScrollPhysics(),
@@ -23,10 +22,12 @@ class LoginPage extends StatelessWidget {
           child: Column(
            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              SizedBox(height: 10),
               Logo(),
-              SizedBox(height: 10),
-              Forms(),
-              SizedBox(height: 10),
+              Padding(padding: EdgeInsets.only(top: 10,bottom: 40),
+              child:  Forms(),
+              ),
+  
               LabelPage(),
              
               TextButton(
@@ -47,7 +48,6 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
               ],
             ),
         ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/chat/chat_page.dart';
-import 'package:flutter_application_1/pages/auth/login/login_page.dart';
+import 'package:flutter_application_1/auth/login/login_page.dart';
 
-import '../auth/register/register_page.dart';
+import '../user/users_page.dart';
+
 
 
 class PrivacyPage extends StatelessWidget {
@@ -58,8 +58,8 @@ Política de Privacidad
 
 Para consultas sobre privacidad, escribime a mi 😗
 ''';
+  
   final bool isRegistered = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ Para consultas sobre privacidad, escribime a mi 😗
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => const ChatPage()
+                      builder: (BuildContext context) => UsersPage(username:'')
                     ),
                   );
                 } else {
@@ -97,11 +97,11 @@ Para consultas sobre privacidad, escribime a mi 😗
                                 context,
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      const RegisterPage(),
+                                      const LoginPage(),
                                 ),
                               );
                             },
-                            child: const Text("Registrar"),
+                            child: const Text("Salir"),
                           ),
                         ],
                       );

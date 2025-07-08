@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/data_base.dart';
-import 'package:flutter_application_1/pages/auth/register/widget/registro_field.dart';
+import 'package:flutter_application_1/auth/register/widgets/registro_field.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-import '../../users/users.dart';
+import '../../models/users.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -16,19 +16,18 @@ class RegisterPage extends StatefulWidget {
 }
 
 class RegisterPageState extends State<RegisterPage> {
-  File? _profileImage;
+  File? profileImage;
   final ImagePicker _picker = ImagePicker();
 
   final emailController = TextEditingController();
-  final paswordControlles = TextEditingController();
+  final passwordControlles = TextEditingController();
   final usernameController = TextEditingController();
 
-
-  Future<void> _pickImage() async {
+  Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _profileImage = File(pickedFile.path);
+        profileImage = File(pickedFile.path);
       });
     }
   }
@@ -36,28 +35,37 @@ class RegisterPageState extends State<RegisterPage> {
   void registerUser() {
     
     String email = emailController.text.trim();
-    String password = paswordControlles.text;
+    String password = passwordControlles.text;
     String username = usernameController.text;
 
     if (email.isEmpty || password.isEmpty || username.isEmpty) {
-      showMessage('Por favor completa todos los campos');
+      _showMessage('Por favor completa todos los campos');
       return;
     }
 
     if (!email.endsWith('@gmail.com')) {
-      showMessage('Por favor ingresa un correo Gmail válido');
+      _showMessage('Por favor ingresa un correo Gmail válido');
+      usernameController.clear();
+      emailController.clear();
+      passwordControlles.clear();
       return;
     }
 
-    DataBase.registeredUser.add(Users(email: email, password: password, username: '', imagePath: ''));
+    DataBase.registeredUser.add(
+      Users(
+      username: username, 
+      email: email, 
+      password: password, 
+      imagePath:  profileImage?.path ?? '')
+    );
 
     UsuarioRegistrado.registrado = true;
 
-    showMessage('Usuario registrado exitosamente');
+    _showMessage('Usuario registrado exitosamente');
     Navigator.pop(context);
   }
 
-  void showMessage(String msg) {
+  void _showMessage(String msg) {
     final snackBar = SnackBar(
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,7 +73,7 @@ class RegisterPageState extends State<RegisterPage> {
       ),
       backgroundColor: Colors.deepPurpleAccent,
       behavior: SnackBarBehavior.floating,
-      duration: Duration(seconds: 1),
+      duration: Duration(seconds: 2),
     );
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -79,33 +87,20 @@ class RegisterPageState extends State<RegisterPage> {
         fit: StackFit.expand,
         children: [
           Padding(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(15),
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Colors.white,
-                    backgroundImage: _profileImage != null
-                        ? FileImage(_profileImage!)
-                        : AssetImage('assets/default_avatar.png')
-                              as ImageProvider,
-                    child: _profileImage == null
-                        ? Icon(Icons.person, size: 90, color: Colors.grey)
-                        : null,
-                  ),
-                ),
+                perfil(),
                 SizedBox(height: 10),
                 Text('Agrega una imagen de perfil'),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 RegistroField(
                   emailController: emailController,
-                  passwordController: paswordControlles,
+                  passwordController: passwordControlles,
                   usernameController: usernameController,
-                  registerUser: registerUser, 
-                  ),
-                SizedBox(height: 10),
+                  registerUser: registerUser,
+                ),
+                SizedBox(height: 5),
                 Image(
                   image: AssetImage('assets/registro.gif'),
                   width: 100,
@@ -119,6 +114,22 @@ class RegisterPageState extends State<RegisterPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  GestureDetector perfil() {
+    return GestureDetector(
+      onTap: pickImage,
+      child: CircleAvatar(
+        radius: 60,
+        backgroundColor: Colors.white,
+        backgroundImage: profileImage != null
+            ? FileImage(profileImage!)
+            : AssetImage('assets/default_avatar.png') as ImageProvider,
+        child: profileImage == null
+            ? Icon(Icons.person, size: 90, color: Colors.grey)
+            : null,
       ),
     );
   }

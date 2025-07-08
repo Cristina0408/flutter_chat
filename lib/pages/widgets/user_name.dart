@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/widgets/controllers.dart';
+
+import 'controllers.dart';
 
 class UserName extends StatelessWidget {
   final TextEditingController controller;

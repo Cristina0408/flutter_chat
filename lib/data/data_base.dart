@@ -1,4 +1,4 @@
-import '../pages/users/users.dart';
+import '../models/users.dart';
 
 
 class DataBase {

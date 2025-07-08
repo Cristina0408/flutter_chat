@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/widgets/controllers.dart';
+import 'package:flutter_application_1/pages/widgets/controllers.dart';
 
 class GmailFieldInput extends StatelessWidget {
   final TextEditingController controller;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import "package:flutter_application_1/pages/user/users_page.dart";
 
-import '../../../../data/data_base.dart';
-import '../../../chat/chat_page.dart';
-import '../../../users/users.dart';
-import '../../../../widgets/gmail_fiel.dart';
+import 'package:flutter_application_1/models/users.dart';
+import '../../../pages/widgets/password_field.dart';
+import '../../../pages/widgets/gmail_fiel.dart';
 import 'ingresar_field.dart';
-import '../../../../widgets/password_field.dart';
+import '../../../data/data_base.dart';
 
 class Forms extends StatefulWidget {
   const Forms({super.key});
@@ -17,6 +17,7 @@ class Forms extends StatefulWidget {
 class FormsState extends State<Forms> {
   final gmailController = TextEditingController();
   final passwordController = TextEditingController();
+  final usernameController = TextEditingController();
 
   void _showMessage(String msg) {
     final snackBar = SnackBar(
@@ -43,22 +44,24 @@ class FormsState extends State<Forms> {
       existingUser = DataBase.registeredUser.firstWhere(
         (user) => user.email == email && user.password == password,
       );
+      gmailController.clear();
+      passwordController.clear();
     } catch (e) {
       existingUser = null;
     }
 
     if (existingUser != null) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ChatPage()),
+        MaterialPageRoute(
+          builder: (context) => UsersPage(username: existingUser!.username),
+        ),
       );
     } else {
       _showMessage('Usuario no encontrado!!!');
-
       gmailController.clear();
       passwordController.clear();
     }
-    IngresoWidget(onPressed: _loginUser);
   }
 
   @override
@@ -70,15 +73,17 @@ class FormsState extends State<Forms> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           GmailFieldInput(controller: gmailController),
-          const SizedBox(height: 20),
-          PasswordTextField(controller: passwordController),
-          const SizedBox(height: 30),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 40),
+            child: PasswordTextField(controller: passwordController),
+          ),
+
           IngresoWidget(
             onPressed: () {
               _loginUser();
             },
           ),
-          const SizedBox(height: 5),
         ],
       ),
     );
