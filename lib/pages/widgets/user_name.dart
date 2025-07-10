@@ -22,10 +22,11 @@ class UserName extends StatelessWidget {
         ],
       ),
       child: ControllersPage(
-        controller: controller, 
-        hintText: 'Nombre de Usuario', 
-        prefixIcon: Icon(Icons.person), 
-        obscureText: false,),
+        controller: controller,
+        hintText: 'Nombre de Usuario',
+        prefixIcon: Icon(Icons.person),
+        obscureText: false,
+      ),
     );
   }
 }

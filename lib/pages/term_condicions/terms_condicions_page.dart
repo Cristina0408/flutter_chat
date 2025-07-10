@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/term_condicions/privacy_page.dart';
 
-
 class TermsPage extends StatelessWidget {
-  
-
-
   final String termsText = '''
 Términos y Condiciones de Uso
 

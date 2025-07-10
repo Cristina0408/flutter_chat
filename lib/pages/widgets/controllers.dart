@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class ControllersPage extends StatelessWidget {
   final TextEditingController controller;
-  
+
   final String hintText;
   final Icon prefixIcon;
-    final bool obscureText;
+  final bool obscureText;
 
   const ControllersPage({
     super.key,
     required this.controller,
     required this.hintText,
-    required this.prefixIcon, 
+    required this.prefixIcon,
     required this.obscureText,
   });
 

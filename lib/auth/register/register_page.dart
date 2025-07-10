@@ -33,7 +33,6 @@ class RegisterPageState extends State<RegisterPage> {
   }
 
   void registerUser() {
-    
     String email = emailController.text.trim();
     String password = passwordControlles.text;
     String username = usernameController.text;
@@ -53,10 +52,11 @@ class RegisterPageState extends State<RegisterPage> {
 
     DataBase.registeredUser.add(
       Users(
-      username: username, 
-      email: email, 
-      password: password, 
-      imagePath:  profileImage?.path ?? '')
+        username: username,
+        email: email,
+        password: password,
+        profileImage: profileImage?.path ?? '',
+      ),
     );
 
     UsuarioRegistrado.registrado = true;
@@ -126,7 +126,8 @@ class RegisterPageState extends State<RegisterPage> {
         backgroundColor: Colors.white,
         backgroundImage: profileImage != null
             ? FileImage(profileImage!)
-            : AssetImage('assets/default_avatar.png') as ImageProvider,
+            : NetworkImage('https://example.com/default_avatar.png')
+                  as ImageProvider,
         child: profileImage == null
             ? Icon(Icons.person, size: 90, color: Colors.grey)
             : null,

@@ -27,7 +27,6 @@ class PasswordTextField extends StatelessWidget {
         prefixIcon: Icon(Icons.lock),
         obscureText: true,
       ),
-      
     );
   }
 }

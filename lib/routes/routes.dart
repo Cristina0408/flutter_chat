@@ -10,8 +10,8 @@ import '../pages/term_condicions/privacy_page.dart';
 import '../pages/root.dart';
 
 final Map<String, WidgetBuilder> appRoutes = {
-  'chat': (_) => ChatPage(username: '',),
-  'user': (_) => const UsersPage(username:''),
+  'chat': (_) => ChatPage(username: ''),
+  'user': (_) => const UsersPage(username: ''),
   'login': (_) => const LoginPage(),
   'loading': (_) => const LoadingPage(),
   'registro': (_) => const RegisterPage(),

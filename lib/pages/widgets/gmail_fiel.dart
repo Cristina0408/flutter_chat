@@ -21,10 +21,11 @@ class GmailFieldInput extends StatelessWidget {
         ],
       ),
       child: ControllersPage(
-        controller: controller, 
-        hintText: 'Correo electronico', 
-        prefixIcon: Icon(Icons.mail), 
-        obscureText: false,),
+        controller: controller,
+        hintText: 'Correo electronico',
+        prefixIcon: Icon(Icons.mail),
+        obscureText: false,
+      ),
     );
   }
 }

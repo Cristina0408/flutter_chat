@@ -3,10 +3,7 @@ import 'package:flutter_application_1/auth/login/login_page.dart';
 
 import '../user/users_page.dart';
 
-
-
 class PrivacyPage extends StatelessWidget {
- 
   const PrivacyPage({super.key});
 
   final String privacyText = '''
@@ -58,7 +55,7 @@ Política de Privacidad
 
 Para consultas sobre privacidad, escribime a mi 😗
 ''';
-  
+
   final bool isRegistered = false;
 
   @override
@@ -78,7 +75,8 @@ Para consultas sobre privacidad, escribime a mi 😗
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => UsersPage(username:'')
+                      builder: (BuildContext context) =>
+                          UsersPage(username: ''),
                     ),
                   );
                 } else {
