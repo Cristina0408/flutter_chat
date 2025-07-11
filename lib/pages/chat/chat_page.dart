@@ -3,23 +3,33 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/chat/widget/chat_messaje.dart';
 
 import '../user/widgets/connect.dart';
 
 class ChatPage extends StatefulWidget {
+  final String? email;
   final String username;
   final String? imagePath;
 
-  const ChatPage({super.key, required this.username, this.imagePath});
+  const ChatPage({
+    super.key,
+    required this.username,
+    this.imagePath,
+    this.email,
+  });
 
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final FocusNode _focusNode = FocusNode();
-
   final _textController = TextEditingController();
+
+  final List<ChatMessage> _messages = [];
+
+  bool _isWriting = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,21 +73,20 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ],
       ),
-      body: Container(
-        child: Column(
-          children: <Widget>[
-            Flexible(
-              child: ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (_, i) => Text('$i'),
-                reverse: true,
-              ),
+      body: Column(
+        children: <Widget>[
+          Flexible(
+            child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (_, i) => _messages[i],
+              itemCount: _messages.length,
+              reverse: true,
             ),
-            Divider(height: 2),
+          ),
+          Divider(height: 2),
 
-            Container(color: Colors.white, height: 50, child: _inputChat()),
-          ],
-        ),
+          Container(color: Colors.white, height: 50, child: _inputChat()),
+        ],
       ),
     );
   }
@@ -92,7 +101,15 @@ class _ChatPageState extends State<ChatPage> {
               child: TextField(
                 controller: _textController,
                 onSubmitted: _handleSubmit,
-                onChanged: (String text) {},
+                onChanged: (String text) {
+                  setState(() {
+                    if (text.trim().isNotEmpty) {
+                      _isWriting = true;
+                    } else {
+                      _isWriting = false;
+                    }
+                  });
+                },
                 decoration: InputDecoration.collapsed(
                   hintText: 'Enviar mj:',
                   hintStyle: TextStyle(
@@ -109,18 +126,23 @@ class _ChatPageState extends State<ChatPage> {
               margin: EdgeInsets.symmetric(horizontal: 4.0),
               child: !kIsWeb && Platform.isIOS
                   ? CupertinoButton(
-                      child: Text('enviar'),
-                      onPressed: () {
-                        _handleSubmit(_textController.text);
-                      },
+                      onPressed: _isWriting
+                          ? () => _handleSubmit(_textController.text.trim())
+                          : null,
+                      child: Text('Enviar'),
                     )
                   : Container(
                       margin: EdgeInsets.symmetric(horizontal: 8.0),
-                      child: IconButton(
-                        icon: Icon(Icons.send, color: Colors.blue[300]),
-                        onPressed: () {
-                          _handleSubmit(_textController.text);
-                        },
+                      child: IconTheme(
+                        data: IconThemeData(color: Colors.blue),
+                        child: IconButton(
+                          highlightColor: Colors.transparent,
+                          splashColor: Colors.transparent,
+                          icon: Icon(Icons.send),
+                          onPressed: _isWriting
+                              ? () => _handleSubmit(_textController.text.trim())
+                              : null,
+                        ),
                       ),
                     ),
             ),
@@ -130,9 +152,37 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  void _handleSubmit(String texto) {
-    print(texto);
+  void _handleSubmit(String text) {
+    if (text.isEmpty) return;
+    if (text.trim().isEmpty || widget.email == null) return;
+
     _textController.clear();
     _focusNode.requestFocus();
+
+    final newMessage = ChatMessage(
+      text: text,
+      senderEmail: widget.email!,
+      currentUserEmail: widget.email!,
+      animationController: AnimationController(
+        vsync: this,
+        duration: Duration(milliseconds: 300),
+      ),
+    );
+
+    setState(() {
+      _messages.insert(0, newMessage);
+      newMessage.animationController.forward();
+
+      _isWriting = false;
+    });
+  }
+
+  @override
+  void dispose() {
+    for (ChatMessage message in _messages) {
+      message.animationController.dispose();
+    }
+
+    super.dispose();
   }
 }

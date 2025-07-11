@@ -41,7 +41,7 @@ class _UsersPageState extends State<UsersPage> {
     Users(
       isOnline: true,
       username: 'Noe',
-      email: 'a@gmail',
+      email: 'noe@gmail.com',
       password: '1',
       profileImage: '',
     ),
@@ -67,6 +67,7 @@ class _UsersPageState extends State<UsersPage> {
       profileImage: '',
     ),
   ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +151,11 @@ class _UsersPageState extends State<UsersPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ChatPage(username: usuario.username),
+            builder: (_) => ChatPage(
+              username: usuario.username, 
+              email: usuario.email,
+              imagePath: usuario.profileImage,
+              ),
           ),
         );
       },
@@ -165,7 +170,8 @@ class _UsersPageState extends State<UsersPage> {
 
   ImageProvider? _buildProfileImage(String path) {
     if (path.isEmpty) {
-      return AssetImage('assets/default_avatar.png');
+      return NetworkImage('https://example.com/default_avatar.png')
+          as ImageProvider;
     }
 
     if (kIsWeb) {

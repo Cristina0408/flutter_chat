@@ -4,6 +4,7 @@ class Users {
   final String password;
   final String profileImage;
   bool isOnline;
+ 
 
   Users({
     this.isOnline = false,
